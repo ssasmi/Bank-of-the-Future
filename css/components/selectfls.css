@@ -1,0 +1,172 @@
+@charset "UTF-8";
+/*
+snippet: sel
+Атрибуты для тега SELECT:
+class=имя класса — модификатор к конкретному селекту. В итоге получится select select_имя класса
+multiple — мультивыбор
+disabled — недоступен
+data-tags — режим тегов (только для multiple), позволяет вставлять выбранные значения в виде тегов с крестиком для удаления. Также есть возможность выводить эти теги в любом указанном месте, указав селектор блока в качестве значения атрибута
+data-scroll — включит прокрутку для выпадающего списка, дополнительно можно подключить кастомный скролл simplebar в js/app.js. Указанное число для атрибута ограничит высоту контейнера выпадающего списка
+data-checkbox (в работе) — стилизация элементов по checkbox (только для multiple)
+data-show-selected — отключает скрытие выбранного элемента
+data-search — позволяет искать по выпадающему списку
+data-speed — позволяет указать скорость открытия/закрытия списка в миллисекундах, по умолчанию 150
+data-open — селект открыт сразу
+data-submit — отправляет форму при изменении селекта
+data-pseudo-label=заголовок — добавляет псевдоэлемент к заголовку селекта с указанным текстом, а также класс _select-pseudo-label
+
+Атрибуты для тега OPTION:
+data-class=имя класса — добавляет класс
+data-asset=путь к картинке или текст — добавляет в элемент списка структуру двух колонок с указанными данными
+data-href=адрес ссылки — добавляет ссылку в элемент списка
+data-href-blank  — откроет ссылку в новом окне
+Атрибуты для для плейсхолдера (плейсхолдер — это OPTION с пустым value)
+data-label — добавляет label к селекту
+data-show — показывает плейсхолдер в списке (только для единичного выбора)
+Атрибуты для прочих элементов
+data-one-select — селекты внутри объекта с этим атрибутом будут открываться только по одному. То есть при открытии селекта другой открытый селект закрывается.
+
+select — Главный блок
+select__body — Тело селекта
+select__title — Заголовок
+select__value — Значение в заголовке
+select__label — Лейбл
+select__input — Поле ввода
+select__text — Оболочка текстовых данных
+select__link — Ссылка в элементе
+select__options — Выпадающий список
+select__scroll — Оболочка при скролле
+select__option — Пункт
+select__content — Оболочка контента в заголовке
+select__row — Ряд
+select__asset — Дополнительные данные
+_select-disabled — Запрещен
+_select-tag — Класс тега
+_select-open — Список открыт
+_select-active — Список выбран
+_select-focus — Список в фокусе
+_select-multiple — Мультивыбор
+_select-checkbox — Стиль чекбокса
+_select-selected — Выбранный пункт
+_select-pseudo-label — Псевдолейбл для заголовка селекта
+
+*/
+.select {
+  position: relative;
+}
+.select__body {
+  position: relative;
+}
+.select__title {
+  color: inherit;
+  text-align: left;
+  border: 1px solid #d9d9d9;
+  background-color: #fff;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+}
+.select__value {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: rem(30);
+  padding: 0 rem(15);
+  gap: rem(10);
+}
+.select__value > * {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.select__value:after {
+  content: "";
+  -ms-flex-item-align: stretch;
+  -ms-grid-row-align: stretch;
+  align-self: stretch;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 10px;
+  flex: 0 0 10px;
+  -webkit-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+._select-open .select__value:after {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+.select__value._select-pseudo-label::before {
+  content: attr(data-pseudo-label);
+  opacity: 0.5;
+}
+.select__text {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.select__input {
+  width: 100%;
+  background-color: transparent;
+  height: 100%;
+}
+.select__options {
+  color: #000;
+  position: absolute;
+  top: 39px;
+  border-radius: 0 0 4px 4px;
+  min-width: 100%;
+  left: 0;
+  background-color: #fff;
+  border-top: 0;
+  border: 1px solid #d9d9d9;
+  border-top: 0;
+  padding: 10px 0px 5px 0px;
+}
+.select__scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 200px;
+}
+.select__option {
+  width: 100%;
+  display: block;
+  text-align: left;
+  cursor: pointer;
+  padding: 5px 15px;
+  color: inherit;
+}
+.select__option._select-selected {
+  background-color: #eee;
+}
+@media (any-hover: hover) {
+  .select__option:hover {
+    background: #d9d9d9;
+  }
+}
+.select__row {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.select._select-open {
+  z-index: 5;
+}
+._select-tag {
+  cursor: pointer;
+}
